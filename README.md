@@ -34,7 +34,37 @@ PHP_SUBST(F_REDIS_GET_CONNECTED_SHARED_LIBADD)
 ```
 vim f_redis_get_connected.c
 ```
+## 添加配置
+1、php_f_redis_get_connected.h中添加如下内容
+```
+ZEND_BEGIN_MODULE_GLOBALS(f_redis_get_connected)
+  zend_long  redis_port;
+  char *redis_host;
+ZEND_END_MODULE_GLOBALS(f_redis_get_connected)
+```
+2、f_redis_get_connected.c中添加如下内容
+```
+ZEND_DECLARE_MODULE_GLOBALS(f_redis_get_connected)
+PHP_INI_BEGIN()
+    STD_PHP_INI_ENTRY("f_redis_get_connected.redis_port",      "6379", PHP_INI_ALL, OnUpdateLong, redis_port, zend_f_redis_get_connected_globals, f_redis_get_connected_globals)
+    STD_PHP_INI_ENTRY("f_redis_get_connected.redis_host", "127.0.0.1", PHP_INI_ALL, OnUpdateString, redis_host, zend_f_redis_get_connected_globals, f_redis_get_connected_globals)
+PHP_INI_END()
+```
+3、php.ini中添加如下内容
+```
+extension=f_redis_get_connected.so
+;;;;;;;;;;;;;;;;;;;
+; Module Settings ;
+;;;;;;;;;;;;;;;;;;;
 
+[F_redis_get_connected]
+f_redis_get_connected.redis_host = "127.0.0.1"
+f_redis_get_connected.redis_port = 6379
+```
+4、f_redis_get_connected.c中获取配置方法如下
+```
+F_REDIS_GET_CONNECTED_G(redis_host)
+```
 ## 编译、安装
 
 ```shell

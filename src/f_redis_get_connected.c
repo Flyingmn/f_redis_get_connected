@@ -32,13 +32,16 @@
 
 #define CMD_MAX_LENGHT  256
 #define RES_MAX_LENGHT  40
-#define REDIS_HOST  "127.0.0.1"
-#define REDIS_PORT  6379
 redisContext *context = NULL;
 
 /* If you declare any globals in php_f_redis_get_connected.h uncomment this:
 ZEND_DECLARE_MODULE_GLOBALS(f_redis_get_connected)
 */
+ZEND_DECLARE_MODULE_GLOBALS(f_redis_get_connected)
+PHP_INI_BEGIN()
+    STD_PHP_INI_ENTRY("f_redis_get_connected.redis_port",      "6379", PHP_INI_ALL, OnUpdateLong, redis_port, zend_f_redis_get_connected_globals, f_redis_get_connected_globals)
+    STD_PHP_INI_ENTRY("f_redis_get_connected.redis_host", "127.0.0.1", PHP_INI_ALL, OnUpdateString, redis_host, zend_f_redis_get_connected_globals, f_redis_get_connected_globals)
+PHP_INI_END()
 
 /* True global resources - no need for thread safety here */
 static int le_f_redis_get_connected;
@@ -164,8 +167,8 @@ static void php_f_redis_get_connected_init_globals(zend_f_redis_get_connected_gl
 PHP_MINIT_FUNCTION(f_redis_get_connected)
 {
 	/* If you have INI entries, uncomment these lines*/
-	// REGISTER_INI_ENTRIES();
-	context = redisConnect(REDIS_HOST, REDIS_PORT);
+	REGISTER_INI_ENTRIES();
+	context = redisConnect(F_REDIS_GET_CONNECTED_G(redis_host), F_REDIS_GET_CONNECTED_G(redis_port));
 
 	/*链接*/
 	if(context->err)
@@ -186,7 +189,7 @@ PHP_MSHUTDOWN_FUNCTION(f_redis_get_connected)
     redisFree(context);
 
 	/* uncomment this line if you have INI entries*/
-	// UNREGISTER_INI_ENTRIES();
+	UNREGISTER_INI_ENTRIES();
 	return SUCCESS;
 }
 /* }}} */
