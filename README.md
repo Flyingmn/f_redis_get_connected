@@ -72,7 +72,7 @@ PHP7/bin/phpize
 ./configure --with-php-config=PHP7/bin/php-config  
 ./make && make install  
 ```
-## 配置文件 
+## 运行PHP 
 ```php
 print_r(f_redis_get_connected('0', 'test'));
 ```
