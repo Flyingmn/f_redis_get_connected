@@ -73,7 +73,6 @@ PHP7/bin/phpize
 ./make && make install  
 ```
 ## 配置文件 
-php.ini 添加 extension=f_redis_get_connected.so
 ```php
 print_r(f_redis_get_connected('0', 'test'));
 ```
