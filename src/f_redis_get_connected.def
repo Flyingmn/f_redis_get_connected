@@ -1,0 +1,1 @@
+string f_redis_get_connected(string database, string key)
