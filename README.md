@@ -1,4 +1,4 @@
-# PHP扩展长连接 f_redis_get_connected
+# PHP-Redis长连接 f_redis_get_connected
 
 redis: get test 
 
